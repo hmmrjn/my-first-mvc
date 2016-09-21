@@ -6,8 +6,36 @@ class App {
 	protected $params = [];
 
 	public function __construct() {
-		print_r($this->parseUrl());
+		$url = $this->parseUrl();
+		print_r($url);
+
+		//controller
+		if(file_exists('../app/controllers/'.$url[0].'.php')){
+			$this->controller = $url[0];
+			unset($url[0]);
+		}
+		require_once '../app/controllers/'.$this->controller.'.php';
+		echo '<br>controller: '.$this->controller;
+		$this->controller = new $this->controller;
+
+		//method
+		if(isset($url[1])){
+			if(method_exists($this->controller, $url[1])){
+				$this->method = $url[1];
+				echo '<br>method: '.$this->method;
+				unset($url[1]);
+			}
+		}
+
+		//params
+		//array_values() e.g Array([2]=>param) to Array([0]=>param)
+		$this->params = $url ? array_values($url) : [];
+		echo '<br>params: ';
+		print_r($this->params);
+
+		call_user_func_array([$this->controller, $this->method], $this->params);
 	}
+	
 	//analize a url
 	public function parseUrl() {
 		if(isset($_GET['url'])){
