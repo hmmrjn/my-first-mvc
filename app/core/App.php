@@ -22,20 +22,22 @@ class App {
 		if(isset($url[1])){
 			if(method_exists($this->controller, $url[1])){
 				$this->method = $url[1];
-				echo '<br>method: '.$this->method;
 				unset($url[1]);
 			}
 		}
+		echo '<br>method: '.$this->method;
 
 		//params
 		//array_values() e.g Array([2]=>param) to Array([0]=>param)
 		$this->params = $url ? array_values($url) : [];
 		echo '<br>params: ';
 		print_r($this->params);
+		echo '<hr>';
 
+		//call controllers methods
 		call_user_func_array([$this->controller, $this->method], $this->params);
 	}
-	
+
 	//analize a url
 	public function parseUrl() {
 		if(isset($_GET['url'])){
