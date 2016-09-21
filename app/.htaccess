@@ -1,0 +1,2 @@
+#prevent access to directories without a index.php or index.html file inside
+Options -Indexes

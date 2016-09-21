@@ -1,0 +1,15 @@
+#allow calling for example index.php as index
+Options -MultiViews
+
+#allow rewriting URL requests
+RewriteEngine On
+
+#pinpoint the index.php file that we want to call later on RewriteRule
+RewriteBase /public
+
+#don't rewrite existing directories and files
+RewriteCond %{REQUEST_FILENAME}% !-d
+RewriteCond %{REQUEST_FILENAME}% !-f
+
+#take the current URL and pass it through to index.php as a querry string
+RewriteRule ^(.+)$ index.php?url=$1 [QSA,L]
